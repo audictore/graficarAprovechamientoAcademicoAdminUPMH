@@ -4,26 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aprovechamiento Académico · UPMH</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+<link rel="icon" href="assets/logo.png">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
   :root{
-    --bg:#f4f6fb;
+    --bg:#f6f4f9;
     --surface:#ffffff;
-    --surface-2:#eef1f8;
-    --border:#e1e5f0;
-    --text:#1a2233;
-    --text-muted:#5b6376;
-    --accent:#1d4ed8;
-    --accent-2:#0891b2;
-    --accent-soft:#e0e9ff;
+    --surface-2:#efe9f4;
+    --border:#e2d9ea;
+    --text:#241a2e;
+    --text-muted:#6b5f76;
+    --accent:#5b3373;
+    --accent-2:#f4b737;
+    --accent-soft:#ece2f2;
     --danger:#dc2626;
     --danger-soft:#fee2e2;
-    --warn:#d97706;
-    --warn-soft:#fef3c7;
+    --warn:#c9860f;
+    --warn-soft:#fdf0d4;
     --good:#16a34a;
     --good-soft:#dcfce7;
-    --shadow: 0 1px 2px rgba(20,25,45,.04), 0 8px 24px -12px rgba(20,25,45,.12);
+    --shadow: 0 1px 2px rgba(45,20,60,.05), 0 8px 24px -12px rgba(45,20,60,.16);
     --radius: 14px;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
@@ -42,8 +42,7 @@
   }
   .brand{display:flex;gap:14px;align-items:center;}
   .brand .logo{
-    width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;color:#fff;
+    width:52px;height:52px;flex-shrink:0;object-fit:contain;
   }
   .brand h1{font-size:19px;margin:0;line-height:1.25;}
   .brand p{margin:2px 0 0;color:var(--text-muted);font-size:13px;}
@@ -131,7 +130,7 @@
 
   <header class="top">
     <div class="brand">
-      <div class="logo">🎓</div>
+      <img class="logo" src="assets/logo.png" alt="Logo Administración UPMH">
       <div>
         <h1>Aprovechamiento Académico</h1>
         <p>Universidad Politécnica Metropolitana de Hidalgo</p>
@@ -143,6 +142,9 @@
   <div class="filters">
     <label>Programa educativo
       <select id="fCarrera"><option value="">Todos</option></select>
+    </label>
+    <label>Cuatrimestre
+      <select id="fCuatrimestre"><option value="">Todos</option></select>
     </label>
     <label>Grupo
       <select id="fGrupo"><option value="">Todos</option></select>
@@ -220,7 +222,7 @@
 </div>
 
 <script>
-const PALETTE = ['#1d4ed8','#0891b2','#7c3aed','#d97706','#16a34a','#dc2626','#0f172a','#db2777'];
+const PALETTE = ['#5b3373','#f4b737','#9c6bb5','#c9860f','#2d1b3d','#e9c468','#7e6190','#a1651f'];
 let RAW = null;
 let ROWS = [];
 let sortState = { key: 'porcentajeReprobados', dir: 'desc' };
@@ -229,6 +231,11 @@ let charts = {};
 function colorFor(name, list){
   const idx = list.indexOf(name);
   return PALETTE[idx % PALETTE.length];
+}
+
+function cuatrimestreOf(grupoNombre){
+  const m = /^\s*(\d+)/.exec(grupoNombre || '');
+  return m ? m[1] : null;
 }
 
 function flatten(data){
@@ -240,6 +247,7 @@ function flatten(data){
           periodo: c.periodo,
           carrera: c.carrera,
           grupo: g.grupo,
+          cuatrimestre: cuatrimestreOf(g.grupo),
           tutor: g.tutor,
           bajas: g.bajas,
           grupal: g.grupal,
@@ -267,6 +275,7 @@ function badgeForPct(pct){
 function currentFilters(){
   return {
     carrera: document.getElementById('fCarrera').value,
+    cuatrimestre: document.getElementById('fCuatrimestre').value,
     grupo: document.getElementById('fGrupo').value,
     q: document.getElementById('fBusqueda').value.trim().toLowerCase(),
   };
@@ -276,17 +285,21 @@ function filteredRows(){
   const f = currentFilters();
   return ROWS.filter(r => {
     if (f.carrera && r.carrera !== f.carrera) return false;
+    if (f.cuatrimestre && r.cuatrimestre !== f.cuatrimestre) return false;
     if (f.grupo && (r.carrera+'|'+r.grupo) !== f.grupo) return false;
     if (f.q && !(r.materia.toLowerCase().includes(f.q) || r.docente.toLowerCase().includes(f.q))) return false;
     return true;
   });
 }
 
-function uniqueGroupsFor(carrera){
+function uniqueGroupsFor(carrera, cuatrimestre){
   const seen = new Set();
   RAW.carreras.forEach(c => {
     if (carrera && c.carrera !== carrera) return;
-    c.grupos.forEach(g => seen.add(JSON.stringify({carrera: c.carrera, grupo: g.grupo})));
+    c.grupos.forEach(g => {
+      if (cuatrimestre && cuatrimestreOf(g.grupo) !== cuatrimestre) return;
+      seen.add(JSON.stringify({carrera: c.carrera, grupo: g.grupo}));
+    });
   });
   return [...seen].map(s => JSON.parse(s));
 }
@@ -297,6 +310,12 @@ function populateFilters(){
   fCarrera.innerHTML = '<option value="">Todos los programas</option>' +
     carreras.map(c => `<option value="${c}">${c}</option>`).join('');
 
+  const cuatrimestres = [...new Set(
+    RAW.carreras.flatMap(c => c.grupos.map(g => cuatrimestreOf(g.grupo))).filter(Boolean)
+  )].sort((a,b) => Number(a)-Number(b));
+  document.getElementById('fCuatrimestre').innerHTML = '<option value="">Todos</option>' +
+    cuatrimestres.map(n => `<option value="${n}">${n}° cuatrimestre</option>`).join('');
+
   const periodos = [...new Set(RAW.carreras.map(c => c.periodo))];
   document.getElementById('periodPill').textContent = periodos.length === 1 ? periodos[0] : `${periodos.length} periodos`;
 
@@ -306,17 +325,26 @@ function populateFilters(){
 
 function refreshGrupoFilter(){
   const fCarrera = document.getElementById('fCarrera').value;
+  const fCuatrimestre = document.getElementById('fCuatrimestre').value;
   const fGrupo = document.getElementById('fGrupo');
-  const groups = uniqueGroupsFor(fCarrera);
+  const groups = uniqueGroupsFor(fCarrera, fCuatrimestre);
   fGrupo.innerHTML = '<option value="">Todos los grupos</option>' +
     groups.map(g => `<option value="${g.carrera}|${g.grupo}">${g.grupo} · ${g.carrera.split(' ').slice(0,3).join(' ')}…</option>`).join('');
 }
 
 function refreshTendenciaSelect(){
+  const fCarrera = document.getElementById('fCarrera').value;
+  const fCuatrimestre = document.getElementById('fCuatrimestre').value;
   const sel = document.getElementById('fGrupoTendencia');
   const groups = [];
-  RAW.carreras.forEach(c => c.grupos.forEach(g => groups.push({carrera:c.carrera, grupo:g.grupo})));
-  sel.innerHTML = groups.map((g,i) => `<option value="${i}">${g.grupo} · ${g.carrera.split(' ').slice(0,2).join(' ')}…</option>`).join('');
+  RAW.carreras.forEach(c => {
+    if (fCarrera && c.carrera !== fCarrera) return;
+    c.grupos.forEach(g => {
+      if (fCuatrimestre && cuatrimestreOf(g.grupo) !== fCuatrimestre) return;
+      groups.push({carrera:c.carrera, grupo:g.grupo});
+    });
+  });
+  sel.innerHTML = groups.map(g => `<option value="${g.carrera}|${g.grupo}">${g.grupo} · ${g.carrera.split(' ').slice(0,2).join(' ')}…</option>`).join('');
 }
 
 function renderKPIs(){
@@ -419,10 +447,10 @@ function renderChartAprobacion(){
 }
 
 function renderChartTendencia(){
-  const idx = Number(document.getElementById('fGrupoTendencia').value || 0);
+  const key = document.getElementById('fGrupoTendencia').value;
   const groups = [];
   RAW.carreras.forEach(c => c.grupos.forEach(g => groups.push({carrera:c.carrera, grupo:g})));
-  const g = groups[idx];
+  const g = groups.find(x => (x.carrera+'|'+x.grupo.grupo) === key) || groups[0];
   destroyChart('tendencia');
   if (!g) return;
   const grupal = g.grupo.grupal;
@@ -433,7 +461,7 @@ function renderChartTendencia(){
       datasets:[{
         label:`${g.grupo.grupo} — promedio grupal`,
         data:[grupal.corte1, grupal.corte2, grupal.corte3, grupal.final],
-        borderColor:'#1d4ed8', backgroundColor:'rgba(29,78,216,.12)',
+        borderColor:'#5b3373', backgroundColor:'rgba(91,51,115,.12)',
         fill:true, tension:.3, pointRadius:4,
       }]
     },
@@ -456,7 +484,7 @@ function renderChartMaterias(){
       datasets:[{
         label:'% Reprobados',
         data: top.map(r=>r.porcentajeReprobados),
-        backgroundColor:'#d97706',
+        backgroundColor:'#f4b737',
         borderRadius:6,
       }]
     },
@@ -509,7 +537,8 @@ function renderAll(){
 }
 
 function wireEvents(){
-  document.getElementById('fCarrera').addEventListener('change', () => { refreshGrupoFilter(); renderAll(); });
+  document.getElementById('fCarrera').addEventListener('change', () => { refreshGrupoFilter(); refreshTendenciaSelect(); renderAll(); });
+  document.getElementById('fCuatrimestre').addEventListener('change', () => { refreshGrupoFilter(); refreshTendenciaSelect(); renderAll(); });
   document.getElementById('fGrupo').addEventListener('change', renderAll);
   document.getElementById('fBusqueda').addEventListener('input', renderAll);
   document.getElementById('fGrupoTendencia').addEventListener('change', renderChartTendencia);
