@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aprovechamiento Académico · UPMH</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#f4f6fb;
+    --surface:#ffffff;
+    --surface-2:#eef1f8;
+    --border:#e1e5f0;
+    --text:#1a2233;
+    --text-muted:#5b6376;
+    --accent:#1d4ed8;
+    --accent-2:#0891b2;
+    --accent-soft:#e0e9ff;
+    --danger:#dc2626;
+    --danger-soft:#fee2e2;
+    --warn:#d97706;
+    --warn-soft:#fef3c7;
+    --good:#16a34a;
+    --good-soft:#dcfce7;
+    --shadow: 0 1px 2px rgba(20,25,45,.04), 0 8px 24px -12px rgba(20,25,45,.12);
+    --radius: 14px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1280px;margin:0 auto;padding:28px 20px 80px;}
+
+  header.top{
+    display:flex;flex-wrap:wrap;gap:16px;align-items:flex-start;justify-content:space-between;
+    margin-bottom:26px;
+  }
+  .brand{display:flex;gap:14px;align-items:center;}
+  .brand .logo{
+    width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;color:#fff;
+  }
+  .brand h1{font-size:19px;margin:0;line-height:1.25;}
+  .brand p{margin:2px 0 0;color:var(--text-muted);font-size:13px;}
+  .period-pill{
+    align-self:center;background:var(--accent-soft);color:var(--accent);border-radius:999px;
+    padding:7px 14px;font-size:13px;font-weight:600;white-space:nowrap;
+  }
+
+  .filters{
+    display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:14px;box-shadow:var(--shadow);
+  }
+  .filters label{
+    display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--text-muted);font-weight:600;
+  }
+  .filters select, .filters input[type=search]{
+    font:inherit;font-size:13.5px;padding:8px 10px;border-radius:9px;border:1px solid var(--border);
+    background:var(--surface);color:var(--text);min-width:190px;
+  }
+  .filters .grow{flex:1;min-width:220px;}
+  .filters .grow input{width:100%;}
+
+  .kpis{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:24px;
+  }
+  .kpi{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:16px 18px;box-shadow:var(--shadow);
+  }
+  .kpi .label{font-size:12px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.03em;}
+  .kpi .value{font-size:28px;font-weight:700;margin-top:6px;line-height:1;}
+  .kpi .sub{font-size:12.5px;color:var(--text-muted);margin-top:6px;}
+  .kpi.accent .value{color:var(--accent);}
+  .kpi.danger .value{color:var(--danger);}
+  .kpi.good .value{color:var(--good);}
+
+  .grid-2{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;margin-bottom:16px;}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+  @media (max-width:900px){ .grid-2, .grid-3{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+    padding:18px 20px;box-shadow:var(--shadow);
+  }
+  .card h2{font-size:15px;margin:0 0 2px;}
+  .card .hint{font-size:12.5px;color:var(--text-muted);margin:0 0 14px;}
+  .card .chart-box{position:relative;height:280px;}
+  .card .chart-box.tall{height:340px;}
+
+  select.inline{
+    font:inherit;font-size:12.5px;padding:5px 8px;border-radius:7px;border:1px solid var(--border);
+    background:var(--surface-2);color:var(--text);
+  }
+  .card-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  thead th{
+    text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.03em;color:var(--text-muted);
+    border-bottom:1px solid var(--border);padding:8px 10px;position:sticky;top:0;background:var(--surface);
+    cursor:pointer;user-select:none;white-space:nowrap;
+  }
+  thead th:hover{color:var(--accent);}
+  thead th.sorted::after{content:" ▾";font-size:10px;}
+  thead th.sorted.asc::after{content:" ▴";font-size:10px;}
+  tbody td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:top;}
+  tbody tr:hover{background:var(--surface-2);}
+  .badge{
+    display:inline-block;padding:2px 9px;border-radius:999px;font-size:11.5px;font-weight:700;white-space:nowrap;
+  }
+  .badge.ok{background:var(--good-soft);color:var(--good);}
+  .badge.warn{background:var(--warn-soft);color:var(--warn);}
+  .badge.bad{background:var(--danger-soft);color:var(--danger);}
+  .table-wrap{max-height:520px;overflow:auto;border:1px solid var(--border);border-radius:10px;}
+  .muted{color:var(--text-muted);}
+
+  footer{margin-top:30px;text-align:center;color:var(--text-muted);font-size:12px;}
+  footer a{color:var(--accent);text-decoration:none;}
+
+  .empty{padding:40px;text-align:center;color:var(--text-muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <div class="logo">🎓</div>
+      <div>
+        <h1>Aprovechamiento Académico</h1>
+        <p>Universidad Politécnica Metropolitana de Hidalgo</p>
+      </div>
+    </div>
+    <span class="period-pill" id="periodPill">Cargando…</span>
+  </header>
+
+  <div class="filters">
+    <label>Programa educativo
+      <select id="fCarrera"><option value="">Todos</option></select>
+    </label>
+    <label>Grupo
+      <select id="fGrupo"><option value="">Todos</option></select>
+    </label>
+    <label class="grow">Buscar materia o docente
+      <input type="search" id="fBusqueda" placeholder="Ej. Contabilidad, Ramírez…">
+    </label>
+  </div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="grid-2">
+    <div class="card">
+      <h2>Promedio final por grupo</h2>
+      <p class="hint">Calificación grupal final, comparada entre grupos del filtro actual.</p>
+      <div class="chart-box"><canvas id="chartGrupos"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Aprobación vs. reprobación</h2>
+      <p class="hint">Alumnos por programa educativo, corte final.</p>
+      <div class="chart-box"><canvas id="chartAprobacion"></canvas></div>
+    </div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <h2>Evolución por corte</h2>
+          <p class="hint" style="margin-bottom:0">Promedio grupal, Corte 1 → Final.</p>
+        </div>
+        <select class="inline" id="fGrupoTendencia"></select>
+      </div>
+      <div class="chart-box"><canvas id="chartTendencia"></canvas></div>
+    </div>
+    <div class="card">
+      <h2>Materias con más reprobación</h2>
+      <p class="hint">Top 8 materias por % de reprobados, dentro del filtro actual.</p>
+      <div class="chart-box tall"><canvas id="chartMaterias"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>Detalle por materia</h2>
+        <p class="hint" style="margin-bottom:0">Haz clic en una columna para ordenar.</p>
+      </div>
+      <span class="muted" id="tableCount"></span>
+    </div>
+    <div class="table-wrap">
+      <table id="detailTable">
+        <thead>
+          <tr>
+            <th data-key="carrera">Programa</th>
+            <th data-key="grupo">Grupo</th>
+            <th data-key="materia">Materia</th>
+            <th data-key="docente">Docente</th>
+            <th data-key="corte1">C1</th>
+            <th data-key="corte2">C2</th>
+            <th data-key="corte3">C3</th>
+            <th data-key="final">Final</th>
+            <th data-key="totalAlumnos">Alumnos</th>
+            <th data-key="porcentajeReprobados">% Reprob.</th>
+          </tr>
+        </thead>
+        <tbody id="detailBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <footer>
+    Generado a partir de los reportes oficiales de aprovechamiento · actualiza <code>data.json</code> ejecutando <code>scripts/generar_datos.py</code>
+  </footer>
+</div>
+
+<script>
+const PALETTE = ['#1d4ed8','#0891b2','#7c3aed','#d97706','#16a34a','#dc2626','#0f172a','#db2777'];
+let RAW = null;
+let ROWS = [];
+let sortState = { key: 'porcentajeReprobados', dir: 'desc' };
+let charts = {};
+
+function colorFor(name, list){
+  const idx = list.indexOf(name);
+  return PALETTE[idx % PALETTE.length];
+}
+
+function flatten(data){
+  const rows = [];
+  data.carreras.forEach(c => {
+    c.grupos.forEach(g => {
+      g.materias.forEach(m => {
+        rows.push({
+          periodo: c.periodo,
+          carrera: c.carrera,
+          grupo: g.grupo,
+          tutor: g.tutor,
+          bajas: g.bajas,
+          grupal: g.grupal,
+          materia: m.materia,
+          docente: m.docente,
+          corte1: m.corte1, corte2: m.corte2, corte3: m.corte3, final: m.final,
+          totalAlumnos: m.alumnos.total,
+          reprobados: m.alumnos.reprobados,
+          porcentajeReprobados: m.porcentajeReprobados,
+        });
+      });
+    });
+  });
+  return rows;
+}
+
+function fmt(n, d=2){ return (n === null || n === undefined || isNaN(n)) ? '—' : Number(n).toFixed(d); }
+
+function badgeForPct(pct){
+  if (pct === 0) return `<span class="badge ok">Sin reprobados</span>`;
+  if (pct <= 5) return `<span class="badge warn">${fmt(pct,1)}%</span>`;
+  return `<span class="badge bad">${fmt(pct,1)}%</span>`;
+}
+
+function currentFilters(){
+  return {
+    carrera: document.getElementById('fCarrera').value,
+    grupo: document.getElementById('fGrupo').value,
+    q: document.getElementById('fBusqueda').value.trim().toLowerCase(),
+  };
+}
+
+function filteredRows(){
+  const f = currentFilters();
+  return ROWS.filter(r => {
+    if (f.carrera && r.carrera !== f.carrera) return false;
+    if (f.grupo && (r.carrera+'|'+r.grupo) !== f.grupo) return false;
+    if (f.q && !(r.materia.toLowerCase().includes(f.q) || r.docente.toLowerCase().includes(f.q))) return false;
+    return true;
+  });
+}
+
+function uniqueGroupsFor(carrera){
+  const seen = new Set();
+  RAW.carreras.forEach(c => {
+    if (carrera && c.carrera !== carrera) return;
+    c.grupos.forEach(g => seen.add(JSON.stringify({carrera: c.carrera, grupo: g.grupo})));
+  });
+  return [...seen].map(s => JSON.parse(s));
+}
+
+function populateFilters(){
+  const fCarrera = document.getElementById('fCarrera');
+  const carreras = RAW.carreras.map(c => c.carrera);
+  fCarrera.innerHTML = '<option value="">Todos los programas</option>' +
+    carreras.map(c => `<option value="${c}">${c}</option>`).join('');
+
+  const periodos = [...new Set(RAW.carreras.map(c => c.periodo))];
+  document.getElementById('periodPill').textContent = periodos.length === 1 ? periodos[0] : `${periodos.length} periodos`;
+
+  refreshGrupoFilter();
+  refreshTendenciaSelect();
+}
+
+function refreshGrupoFilter(){
+  const fCarrera = document.getElementById('fCarrera').value;
+  const fGrupo = document.getElementById('fGrupo');
+  const groups = uniqueGroupsFor(fCarrera);
+  fGrupo.innerHTML = '<option value="">Todos los grupos</option>' +
+    groups.map(g => `<option value="${g.carrera}|${g.grupo}">${g.grupo} · ${g.carrera.split(' ').slice(0,3).join(' ')}…</option>`).join('');
+}
+
+function refreshTendenciaSelect(){
+  const sel = document.getElementById('fGrupoTendencia');
+  const groups = [];
+  RAW.carreras.forEach(c => c.grupos.forEach(g => groups.push({carrera:c.carrera, grupo:g.grupo})));
+  sel.innerHTML = groups.map((g,i) => `<option value="${i}">${g.grupo} · ${g.carrera.split(' ').slice(0,2).join(' ')}…</option>`).join('');
+}
+
+function renderKPIs(){
+  const rows = filteredRows();
+  const totalAlumnos = new Map();
+  let sumFinal = 0, countFinal = 0, totalReprobados = 0, totalBajas = 0;
+  const gruposVistos = new Set();
+
+  rows.forEach(r => {
+    if (typeof r.final === 'number'){ sumFinal += r.final; countFinal++; }
+    totalReprobados += r.reprobados;
+    const gk = r.carrera+'|'+r.grupo;
+    if (!gruposVistos.has(gk)){
+      gruposVistos.add(gk);
+      totalBajas += r.bajas.cantidad;
+      totalAlumnos.set(gk, r.totalAlumnos);
+    }
+  });
+  const sumAlumnos = [...totalAlumnos.values()].reduce((a,b)=>a+b,0);
+  const promedio = countFinal ? sumFinal/countFinal : 0;
+  const pctReprob = sumAlumnos ? (totalReprobados/sumAlumnos*100) : 0;
+
+  const kpis = [
+    { label:'Promedio final', value: fmt(promedio), sub: `${countFinal} materias evaluadas`, cls:'accent' },
+    { label:'Grupos', value: gruposVistos.size, sub: `${new Set(rows.map(r=>r.carrera)).size} programa(s)` , cls:''},
+    { label:'Alumnos activos', value: sumAlumnos, sub:`${totalBajas} baja(s) en el corte`, cls:'' },
+    { label:'% Reprobación', value: fmt(pctReprob,1)+'%', sub: `${totalReprobados} reprobación(es) de materia`, cls: pctReprob>5?'danger':'good' },
+  ];
+  document.getElementById('kpis').innerHTML = kpis.map(k => `
+    <div class="kpi ${k.cls}">
+      <div class="label">${k.label}</div>
+      <div class="value">${k.value}</div>
+      <div class="sub">${k.sub}</div>
+    </div>
+  `).join('');
+}
+
+function destroyChart(key){ if (charts[key]) { charts[key].destroy(); delete charts[key]; } }
+
+function renderChartGrupos(){
+  const rows = filteredRows();
+  const byGroup = new Map();
+  rows.forEach(r => {
+    const k = r.carrera+'|'+r.grupo;
+    if (!byGroup.has(k)) byGroup.set(k, {carrera:r.carrera, grupo:r.grupo, final:r.grupal.final});
+  });
+  const items = [...byGroup.values()].sort((a,b)=> (b.final||0)-(a.final||0));
+  const carreras = [...new Set(items.map(i=>i.carrera))];
+
+  destroyChart('grupos');
+  const ctx = document.getElementById('chartGrupos');
+  charts.grupos = new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels: items.map(i=>i.grupo),
+      datasets:[{
+        label:'Promedio final grupal',
+        data: items.map(i=>i.final),
+        backgroundColor: items.map(i=>colorFor(i.carrera, carreras)),
+        borderRadius:6,
+        maxBarThickness:34,
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false}, tooltip:{ callbacks:{
+        afterLabel:(c)=> items[c.dataIndex].carrera
+      }}},
+      scales:{ y:{ min:6, max:10, ticks:{stepSize:1} } }
+    }
+  });
+}
+
+function renderChartAprobacion(){
+  const rows = filteredRows();
+  const byCarrera = new Map();
+  rows.forEach(r => {
+    if (!byCarrera.has(r.carrera)) byCarrera.set(r.carrera, {aprob:0, reprob:0});
+    const o = byCarrera.get(r.carrera);
+    o.reprob += r.reprobados;
+    o.aprob += Math.max(0, r.totalAlumnos - r.reprobados);
+  });
+  const labels = [...byCarrera.keys()];
+  destroyChart('aprobacion');
+  charts.aprobacion = new Chart(document.getElementById('chartAprobacion'), {
+    type:'bar',
+    data:{
+      labels: labels.map(l=>l.length>28? l.slice(0,26)+'…': l),
+      datasets:[
+        {label:'Aprobados', data: labels.map(l=>byCarrera.get(l).aprob), backgroundColor:'#16a34a', borderRadius:6, stack:'s'},
+        {label:'Reprobados', data: labels.map(l=>byCarrera.get(l).reprob), backgroundColor:'#dc2626', borderRadius:6, stack:'s'},
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false, indexAxis:'y',
+      plugins:{legend:{position:'bottom'}},
+      scales:{ x:{stacked:true}, y:{stacked:true} }
+    }
+  });
+}
+
+function renderChartTendencia(){
+  const idx = Number(document.getElementById('fGrupoTendencia').value || 0);
+  const groups = [];
+  RAW.carreras.forEach(c => c.grupos.forEach(g => groups.push({carrera:c.carrera, grupo:g})));
+  const g = groups[idx];
+  destroyChart('tendencia');
+  if (!g) return;
+  const grupal = g.grupo.grupal;
+  charts.tendencia = new Chart(document.getElementById('chartTendencia'), {
+    type:'line',
+    data:{
+      labels:['Corte 1','Corte 2','Corte 3','Final'],
+      datasets:[{
+        label:`${g.grupo.grupo} — promedio grupal`,
+        data:[grupal.corte1, grupal.corte2, grupal.corte3, grupal.final],
+        borderColor:'#1d4ed8', backgroundColor:'rgba(29,78,216,.12)',
+        fill:true, tension:.3, pointRadius:4,
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{legend:{display:false}},
+      scales:{ y:{ min:6, max:10 } }
+    }
+  });
+}
+
+function renderChartMaterias(){
+  const rows = filteredRows();
+  const top = [...rows].sort((a,b)=>b.porcentajeReprobados-a.porcentajeReprobados).slice(0,8);
+  destroyChart('materias');
+  charts.materias = new Chart(document.getElementById('chartMaterias'), {
+    type:'bar',
+    data:{
+      labels: top.map(r => `${r.materia} (${r.grupo})`),
+      datasets:[{
+        label:'% Reprobados',
+        data: top.map(r=>r.porcentajeReprobados),
+        backgroundColor:'#d97706',
+        borderRadius:6,
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false, indexAxis:'y',
+      plugins:{legend:{display:false}},
+      scales:{ x:{ min:0 } }
+    }
+  });
+}
+
+function renderTable(){
+  const rows = filteredRows();
+  const key = sortState.key, dir = sortState.dir === 'asc' ? 1 : -1;
+  rows.sort((a,b) => {
+    let av = a[key], bv = b[key];
+    if (typeof av === 'string') return av.localeCompare(bv) * dir;
+    return ((av ?? -Infinity) - (bv ?? -Infinity)) * dir;
+  });
+
+  document.getElementById('tableCount').textContent = `${rows.length} registro(s)`;
+  document.getElementById('detailBody').innerHTML = rows.map(r => `
+    <tr>
+      <td class="muted">${r.carrera.length>32? r.carrera.slice(0,30)+'…': r.carrera}</td>
+      <td>${r.grupo}</td>
+      <td>${r.materia}</td>
+      <td class="muted">${r.docente}</td>
+      <td>${fmt(r.corte1)}</td>
+      <td>${fmt(r.corte2)}</td>
+      <td>${fmt(r.corte3)}</td>
+      <td><strong>${fmt(r.final)}</strong></td>
+      <td>${r.totalAlumnos} <span class="muted">(${r.reprobados} rep.)</span></td>
+      <td>${badgeForPct(r.porcentajeReprobados)}</td>
+    </tr>
+  `).join('') || `<tr><td colspan="10" class="empty">Sin resultados para este filtro.</td></tr>`;
+
+  document.querySelectorAll('#detailTable thead th').forEach(th => {
+    th.classList.toggle('sorted', th.dataset.key === key);
+    th.classList.toggle('asc', th.dataset.key === key && sortState.dir === 'asc');
+  });
+}
+
+function renderAll(){
+  renderKPIs();
+  renderChartGrupos();
+  renderChartAprobacion();
+  renderChartTendencia();
+  renderChartMaterias();
+  renderTable();
+}
+
+function wireEvents(){
+  document.getElementById('fCarrera').addEventListener('change', () => { refreshGrupoFilter(); renderAll(); });
+  document.getElementById('fGrupo').addEventListener('change', renderAll);
+  document.getElementById('fBusqueda').addEventListener('input', renderAll);
+  document.getElementById('fGrupoTendencia').addEventListener('change', renderChartTendencia);
+  document.querySelectorAll('#detailTable thead th').forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.dataset.key;
+      if (sortState.key === key) sortState.dir = sortState.dir === 'asc' ? 'desc' : 'asc';
+      else { sortState.key = key; sortState.dir = 'desc'; }
+      renderTable();
+    });
+  });
+}
+
+fetch('data.json')
+  .then(r => r.json())
+  .then(data => {
+    RAW = data;
+    ROWS = flatten(data);
+    populateFilters();
+    wireEvents();
+    renderAll();
+  })
+  .catch(err => {
+    document.getElementById('kpis').innerHTML = `<div class="empty">No se pudo cargar data.json: ${err.message}</div>`;
+  });
+</script>
+</body>
+</html>
