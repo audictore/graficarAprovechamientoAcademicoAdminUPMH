@@ -21,6 +21,10 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 REPORTES_DIR = REPO_ROOT / "data" / "reportes"
 OUTPUT_PATH = REPO_ROOT / "data.json"
 
+# Cuatrimestres que no se incluyen en el dashboard (el numero es el que abre el
+# nombre del grupo, ej. "6 - A"). El 6 corresponde a la Estadia TSU.
+CUATRIMESTRES_EXCLUIDOS = {"6"}
+
 
 def parse_bajas(texto):
     if texto is None:
@@ -64,6 +68,11 @@ def parse_periodo(texto):
     return m.group(1).strip() if m else "Periodo desconocido"
 
 
+def cuatrimestre_de(grupo_nombre):
+    m = re.match(r"\s*(\d+)", grupo_nombre)
+    return m.group(1) if m else None
+
+
 def parse_workbook(path):
     wb = openpyxl.load_workbook(path, data_only=True)
     ws = wb.active
@@ -82,6 +91,12 @@ def parse_workbook(path):
             carrera = str(row[1]).strip()
         elif first and isinstance(first, str) and str(row[1] or "").startswith("Tutor:"):
             grupo_nombre = str(first).strip()
+            if cuatrimestre_de(grupo_nombre) in CUATRIMESTRES_EXCLUIDOS:
+                # Salta el bloque completo del grupo (encabezado, columnas y materias).
+                i += 2
+                while i < len(rows) and rows[i][0]:
+                    i += 1
+                continue
             tutor = str(row[1]).replace("Tutor:", "").strip()
             bajas = parse_bajas(row[6])
             header_row = rows[i + 1]

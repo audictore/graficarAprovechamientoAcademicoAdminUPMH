@@ -1019,6 +1019,948 @@
           ]
         }
       ]
+    },
+    {
+      "periodo": "SEPTIEMBRE-DICIEMBRE 2026",
+      "carrera": "Licenciatura en Administración y Gestión Empresarial",
+      "grupos": [
+        {
+          "grupo": "9 - A",
+          "tutor": "MARIANA SANTILLAN ARROYO",
+          "bajas": {
+            "cantidad": 0,
+            "porcentaje": 0.0
+          },
+          "grupal": {
+            "corte1": 9.03,
+            "corte2": 0.0,
+            "corte3": 0.0,
+            "final": 3.01
+          },
+          "materias": [
+            {
+              "materia": "Administración de Redes Empresariales",
+              "docente": "LIC. IVAN DE LA SELVA HERNANDEZ",
+              "corte1": 9.91,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.3,
+              "alumnos": {
+                "total": 32,
+                "reprobados": 32
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Comercialización Internacional",
+              "docente": "DRA. GABRIELA LAZCANO CORTES",
+              "corte1": 8.94,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.98,
+              "alumnos": {
+                "total": 32,
+                "reprobados": 32
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Consultoria",
+              "docente": "DRA. MARIANA SANTILLAN ARROYO",
+              "corte1": 9.75,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.25,
+              "alumnos": {
+                "total": 32,
+                "reprobados": 32
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Expresión Oral y Escrita II",
+              "docente": "DRA. ITZEL YAZMIN VERA HERRERA",
+              "corte1": 8.41,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.8,
+              "alumnos": {
+                "total": 32,
+                "reprobados": 32
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Gestión de Marca",
+              "docente": "MTRA. MITZI AILED ROSARIO MORENO RAMIREZ",
+              "corte1": 8.5,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.83,
+              "alumnos": {
+                "total": 32,
+                "reprobados": 32
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Gestión y Evaluación de Proyectos",
+              "docente": "MTRO. MARCO ANTONIO HERNANDEZ GRANADOS",
+              "corte1": 9.38,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.13,
+              "alumnos": {
+                "total": 32,
+                "reprobados": 32
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Inglés IX",
+              "docente": "ING. EDUARDO ALEXANDER BARRIOS SOTO",
+              "corte1": 8.36,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.79,
+              "alumnos": {
+                "total": 32,
+                "reprobados": 32
+              },
+              "porcentajeReprobados": 100.0
+            }
+          ]
+        },
+        {
+          "grupo": "9 - B",
+          "tutor": "IRMA ELIZABETH BAUTISTA VALENCIA",
+          "bajas": {
+            "cantidad": 0,
+            "porcentaje": 0.0
+          },
+          "grupal": {
+            "corte1": 8.81,
+            "corte2": 0.0,
+            "corte3": 0.0,
+            "final": 2.94
+          },
+          "materias": [
+            {
+              "materia": "Administración de Redes Empresariales",
+              "docente": "LIC. IVAN DE LA SELVA HERNANDEZ",
+              "corte1": 9.53,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.18,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Comercialización Internacional",
+              "docente": "DRA. GABRIELA LAZCANO CORTES",
+              "corte1": 8.71,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.9,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Consultoria",
+              "docente": "DRA. MARIANA SANTILLAN ARROYO",
+              "corte1": 9.38,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.12,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Expresión Oral y Escrita II",
+              "docente": "DRA. ITZEL YAZMIN VERA HERRERA",
+              "corte1": 7.84,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.61,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Gestión de Marca",
+              "docente": "MTRA. MITZI AILED ROSARIO MORENO RAMIREZ",
+              "corte1": 8.06,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.69,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Gestión y Evaluación de Proyectos",
+              "docente": "MTRO. MARCO ANTONIO HERNANDEZ GRANADOS",
+              "corte1": 9.21,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.07,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Inglés IX",
+              "docente": "LIC. OSCAR ANTONIO GARCIA VEGA",
+              "corte1": 8.97,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.99,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            }
+          ]
+        },
+        {
+          "grupo": "9 - C",
+          "tutor": "GABRIELA LAZCANO CORTES",
+          "bajas": {
+            "cantidad": 0,
+            "porcentaje": 0.0
+          },
+          "grupal": {
+            "corte1": 9.0,
+            "corte2": 0.0,
+            "corte3": 0.0,
+            "final": 3.0
+          },
+          "materias": [
+            {
+              "materia": "Administración de Redes Empresariales",
+              "docente": "LIC. IVAN DE LA SELVA HERNANDEZ",
+              "corte1": 9.8,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.26,
+              "alumnos": {
+                "total": 30,
+                "reprobados": 30
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Comercialización Internacional",
+              "docente": "DRA. GABRIELA LAZCANO CORTES",
+              "corte1": 8.2,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.74,
+              "alumnos": {
+                "total": 30,
+                "reprobados": 30
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Consultoria",
+              "docente": "DRA. MARIANA SANTILLAN ARROYO",
+              "corte1": 9.5,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.16,
+              "alumnos": {
+                "total": 30,
+                "reprobados": 30
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Expresión Oral y Escrita II",
+              "docente": "DR. ABNER HESLI ROJAS CALVA",
+              "corte1": 9.1,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.03,
+              "alumnos": {
+                "total": 30,
+                "reprobados": 30
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Gestión de Marca",
+              "docente": "MTRA. MITZI AILED ROSARIO MORENO RAMIREZ",
+              "corte1": 8.79,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.93,
+              "alumnos": {
+                "total": 30,
+                "reprobados": 30
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Gestión y Evaluación de Proyectos",
+              "docente": "MTRO. MARCO ANTONIO HERNANDEZ GRANADOS",
+              "corte1": 8.91,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.97,
+              "alumnos": {
+                "total": 30,
+                "reprobados": 30
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Inglés IX",
+              "docente": "LIC. WHALTER GODINEZ BRAVO",
+              "corte1": 8.73,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.91,
+              "alumnos": {
+                "total": 30,
+                "reprobados": 30
+              },
+              "porcentajeReprobados": 100.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "periodo": "SEPTIEMBRE-DICIEMBRE 2026",
+      "carrera": "Técnico Superior Universitario en Emprendimiento, Formulación y Evaluación de Proyectos",
+      "grupos": [
+        {
+          "grupo": "0 - A",
+          "tutor": "KARLA ESCALANTE ALARCON",
+          "bajas": {
+            "cantidad": 0,
+            "porcentaje": 0.0
+          },
+          "grupal": {
+            "corte1": 8.62,
+            "corte2": 0.0,
+            "corte3": 0.0,
+            "final": 2.87
+          },
+          "materias": [
+            {
+              "materia": "Desarrollo De Competencias Globales",
+              "docente": "LIC. GUILLERMO NICOLAS MARTINEZ SANCHEZ",
+              "corte1": 9.56,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.18,
+              "alumnos": {
+                "total": 39,
+                "reprobados": 39
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Desarrollo Sostenible",
+              "docente": "DR. ABNER HESLI ROJAS CALVA",
+              "corte1": 7.94,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.65,
+              "alumnos": {
+                "total": 39,
+                "reprobados": 39
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Introducción A La Lengua Inglesa",
+              "docente": "ING. EDUARDO ALEXANDER BARRIOS SOTO",
+              "corte1": 8.63,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.88,
+              "alumnos": {
+                "total": 39,
+                "reprobados": 39
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Matemáticas",
+              "docente": "DRA. IRMA ELIZABETH BAUTISTA VALENCIA",
+              "corte1": 8,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.67,
+              "alumnos": {
+                "total": 39,
+                "reprobados": 39
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Tutoría BIS",
+              "docente": "MTRA. KARLA ESCALANTE ALARCON",
+              "corte1": 8.99,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.99,
+              "alumnos": {
+                "total": 39,
+                "reprobados": 39
+              },
+              "porcentajeReprobados": 100.0
+            }
+          ]
+        },
+        {
+          "grupo": "0 - B",
+          "tutor": "JUAN CARLOS RODRIGUEZ OLMEDO",
+          "bajas": {
+            "cantidad": 0,
+            "porcentaje": 0.0
+          },
+          "grupal": {
+            "corte1": 8.6,
+            "corte2": 0.0,
+            "corte3": 0.0,
+            "final": 2.87
+          },
+          "materias": [
+            {
+              "materia": "Desarrollo De Competencias Globales",
+              "docente": "LIC. GUILLERMO NICOLAS MARTINEZ SANCHEZ",
+              "corte1": 9.47,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.16,
+              "alumnos": {
+                "total": 39,
+                "reprobados": 39
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Desarrollo Sostenible",
+              "docente": "DR. ABNER HESLI ROJAS CALVA",
+              "corte1": 7.62,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.54,
+              "alumnos": {
+                "total": 39,
+                "reprobados": 39
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Introducción A La Lengua Inglesa",
+              "docente": "LIC. OSCAR ANTONIO GARCIA VEGA",
+              "corte1": 9.09,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.03,
+              "alumnos": {
+                "total": 39,
+                "reprobados": 39
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Matemáticas",
+              "docente": "DRA. IRMA ELIZABETH BAUTISTA VALENCIA",
+              "corte1": 7.94,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.65,
+              "alumnos": {
+                "total": 39,
+                "reprobados": 39
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Tutoría BIS",
+              "docente": "MTRO. JUAN CARLOS RODRIGUEZ OLMEDO",
+              "corte1": 8.89,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.96,
+              "alumnos": {
+                "total": 39,
+                "reprobados": 39
+              },
+              "porcentajeReprobados": 100.0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "periodo": "SEPTIEMBRE-DICIEMBRE 2026",
+      "carrera": "Técnico Superior Universitario en Gestión del Capital Humano",
+      "grupos": [
+        {
+          "grupo": "0 - A",
+          "tutor": "ALONZO LARA FLORES",
+          "bajas": {
+            "cantidad": 0,
+            "porcentaje": 0.0
+          },
+          "grupal": {
+            "corte1": 8.42,
+            "corte2": 0.13,
+            "corte3": 0.13,
+            "final": 2.9
+          },
+          "materias": [
+            {
+              "materia": "Desarrollo De Competencias Globales",
+              "docente": "LIC. GUILLERMO NICOLAS MARTINEZ SANCHEZ",
+              "corte1": 9.48,
+              "corte2": 0.19,
+              "corte3": 0.19,
+              "final": 3.29,
+              "alumnos": {
+                "total": 44,
+                "reprobados": 43
+              },
+              "porcentajeReprobados": 97.7
+            },
+            {
+              "materia": "Desarrollo Sostenible",
+              "docente": "DRA. ITZEL YAZMIN VERA HERRERA",
+              "corte1": 7.94,
+              "corte2": 0.16,
+              "corte3": 0.16,
+              "final": 2.75,
+              "alumnos": {
+                "total": 44,
+                "reprobados": 43
+              },
+              "porcentajeReprobados": 97.7
+            },
+            {
+              "materia": "Introducción A La Lengua Inglesa",
+              "docente": "LIC. WHALTER GODINEZ BRAVO",
+              "corte1": 8.51,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.84,
+              "alumnos": {
+                "total": 44,
+                "reprobados": 44
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Matemáticas",
+              "docente": "DRA. IRMA ELIZABETH BAUTISTA VALENCIA",
+              "corte1": 7.71,
+              "corte2": 0.16,
+              "corte3": 0.16,
+              "final": 2.68,
+              "alumnos": {
+                "total": 44,
+                "reprobados": 43
+              },
+              "porcentajeReprobados": 97.7
+            },
+            {
+              "materia": "Tutoría BIS",
+              "docente": "ING. ALONZO LARA FLORES",
+              "corte1": 8.46,
+              "corte2": 0.16,
+              "corte3": 0.16,
+              "final": 2.93,
+              "alumnos": {
+                "total": 44,
+                "reprobados": 43
+              },
+              "porcentajeReprobados": 97.7
+            }
+          ]
+        },
+        {
+          "grupo": "3 - A",
+          "tutor": "HORACIO SANCHEZ HERNANDEZ",
+          "bajas": {
+            "cantidad": 0,
+            "porcentaje": 0.0
+          },
+          "grupal": {
+            "corte1": 9.04,
+            "corte2": 0.0,
+            "corte3": 0.0,
+            "final": 3.01
+          },
+          "materias": [
+            {
+              "materia": "Actividades Culturales Y Deportivas III",
+              "docente": "no disponible",
+              "corte1": 9.42,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.14,
+              "alumnos": {
+                "total": 37,
+                "reprobados": 37
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Análisis Financiero",
+              "docente": "MTRO. HORACIO SANCHEZ HERNANDEZ",
+              "corte1": 8.97,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.99,
+              "alumnos": {
+                "total": 37,
+                "reprobados": 37
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Desarrollo Del Pensamiento Y Toma De Decisiones",
+              "docente": "DRA. GABRIELA LAZCANO CORTES",
+              "corte1": 9.68,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.22,
+              "alumnos": {
+                "total": 37,
+                "reprobados": 37
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Fundamentos De Calidad",
+              "docente": "DR. CRISTIAN ARTURO GRANADOS HERRERA",
+              "corte1": 9.1,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.03,
+              "alumnos": {
+                "total": 37,
+                "reprobados": 37
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Fundamentos De Mercadotecnia",
+              "docente": "MTRA. KARLA ESCALANTE ALARCON",
+              "corte1": 8.91,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.97,
+              "alumnos": {
+                "total": 37,
+                "reprobados": 37
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "INGLÉS III",
+              "docente": "LIC. SANDRA RAMIREZ MARTINEZ",
+              "corte1": 8.94,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.98,
+              "alumnos": {
+                "total": 37,
+                "reprobados": 37
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Macroeconomía",
+              "docente": "DRA. MARIANA SANTILLAN ARROYO",
+              "corte1": 7.89,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.63,
+              "alumnos": {
+                "total": 37,
+                "reprobados": 37
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Proyecto Integrador I",
+              "docente": "MTRO. JUAN CARLOS RODRIGUEZ OLMEDO",
+              "corte1": 9.42,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.14,
+              "alumnos": {
+                "total": 37,
+                "reprobados": 37
+              },
+              "porcentajeReprobados": 100.0
+            }
+          ]
+        },
+        {
+          "grupo": "3 - B",
+          "tutor": "MITZI AILED ROSARIO MORENO RAMIREZ",
+          "bajas": {
+            "cantidad": 1,
+            "porcentaje": 2.7
+          },
+          "grupal": {
+            "corte1": 9.21,
+            "corte2": 0.0,
+            "corte3": 0.0,
+            "final": 3.07
+          },
+          "materias": [
+            {
+              "materia": "Actividades Culturales Y Deportivas III",
+              "docente": "no disponible",
+              "corte1": 9.81,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.27,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Análisis Financiero",
+              "docente": "MTRO. HORACIO SANCHEZ HERNANDEZ",
+              "corte1": 8.96,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.99,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Desarrollo Del Pensamiento Y Toma De Decisiones",
+              "docente": "MTRA. MITZI AILED ROSARIO MORENO RAMIREZ",
+              "corte1": 9.52,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.17,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Fundamentos De Calidad",
+              "docente": "DR. CRISTIAN ARTURO GRANADOS HERRERA",
+              "corte1": 9.57,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.19,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Fundamentos De Mercadotecnia",
+              "docente": "MTRA. KARLA ESCALANTE ALARCON",
+              "corte1": 8.5,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.83,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "INGLÉS III",
+              "docente": "LIC. SANDRA RAMIREZ MARTINEZ",
+              "corte1": 8.97,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.99,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Macroeconomía",
+              "docente": "MTRO. MARCO ANTONIO HERNANDEZ GRANADOS",
+              "corte1": 8.95,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.98,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Proyecto Integrador I",
+              "docente": "MTRO. JUAN CARLOS RODRIGUEZ OLMEDO",
+              "corte1": 9.38,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.13,
+              "alumnos": {
+                "total": 36,
+                "reprobados": 36
+              },
+              "porcentajeReprobados": 100.0
+            }
+          ]
+        },
+        {
+          "grupo": "3 - C",
+          "tutor": "ANDRES DIMAS ESPINO",
+          "bajas": {
+            "cantidad": 0,
+            "porcentaje": 0.0
+          },
+          "grupal": {
+            "corte1": 9.17,
+            "corte2": 0.0,
+            "corte3": 0.0,
+            "final": 3.06
+          },
+          "materias": [
+            {
+              "materia": "Actividades Culturales Y Deportivas III",
+              "docente": "no disponible",
+              "corte1": 9.44,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.15,
+              "alumnos": {
+                "total": 27,
+                "reprobados": 27
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Análisis Financiero",
+              "docente": "MTRO. HORACIO SANCHEZ HERNANDEZ",
+              "corte1": 9.47,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.15,
+              "alumnos": {
+                "total": 27,
+                "reprobados": 27
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Desarrollo Del Pensamiento Y Toma De Decisiones",
+              "docente": "DRA. IRMA ELIZABETH BAUTISTA VALENCIA",
+              "corte1": 9.48,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.16,
+              "alumnos": {
+                "total": 27,
+                "reprobados": 27
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Fundamentos De Calidad",
+              "docente": "DR. CRISTIAN ARTURO GRANADOS HERRERA",
+              "corte1": 8.79,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.93,
+              "alumnos": {
+                "total": 27,
+                "reprobados": 27
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Fundamentos De Mercadotecnia",
+              "docente": "MTRA. KARLA ESCALANTE ALARCON",
+              "corte1": 8.93,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.98,
+              "alumnos": {
+                "total": 27,
+                "reprobados": 27
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "INGLÉS III",
+              "docente": "LIC. SANDRA RAMIREZ MARTINEZ",
+              "corte1": 9.32,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.11,
+              "alumnos": {
+                "total": 27,
+                "reprobados": 27
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Macroeconomía",
+              "docente": "MTRO. ANDRES DIMAS ESPINO",
+              "corte1": 8.5,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 2.83,
+              "alumnos": {
+                "total": 27,
+                "reprobados": 27
+              },
+              "porcentajeReprobados": 100.0
+            },
+            {
+              "materia": "Proyecto Integrador I",
+              "docente": "MTRO. JUAN CARLOS RODRIGUEZ OLMEDO",
+              "corte1": 9.44,
+              "corte2": 0,
+              "corte3": 0,
+              "final": 3.15,
+              "alumnos": {
+                "total": 27,
+                "reprobados": 27
+              },
+              "porcentajeReprobados": 100.0
+            }
+          ]
+        }
+      ]
     }
   ]
 }

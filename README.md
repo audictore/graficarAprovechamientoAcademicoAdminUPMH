@@ -34,4 +34,5 @@ queda en la sección "About" del repositorio una vez habilitado.
 ## Notas sobre los datos
 
 - El "% de Reprobación" institucional agrega las reprobaciones **por materia**, no alumnos únicos: un mismo alumno reprobado en dos materias cuenta dos veces, igual que en el reporte original de cada grupo.
+- Los grupos de 6.º cuatrimestre (Estadía TSU) se omiten al generar `data.json`; se controla con `CUATRIMESTRES_EXCLUIDOS` en `scripts/generar_datos.py`.
 - Los nombres de grupo (ej. "5 - A") pueden repetirse entre programas educativos distintos; el dashboard los distingue internamente por programa + grupo.

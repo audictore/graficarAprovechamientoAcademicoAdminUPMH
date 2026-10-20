@@ -140,6 +140,9 @@
   </header>
 
   <div class="filters">
+    <label>Periodo
+      <select id="fPeriodo"></select>
+    </label>
     <label>Programa educativo
       <select id="fCarrera"><option value="">Todos</option></select>
     </label>
@@ -158,14 +161,14 @@
 
   <div class="grid-2">
     <div class="card">
-      <h2>Promedio final por grupo</h2>
-      <p class="hint">Calificación grupal final, comparada entre grupos del filtro actual.</p>
+      <h2 id="titleGrupos">Promedio final por grupo</h2>
+      <p class="hint" id="hintGrupos">Calificación grupal final, comparada entre grupos del filtro actual.</p>
       <div class="chart-box"><canvas id="chartGrupos"></canvas></div>
     </div>
     <div class="card">
       <h2>Aprobación vs. reprobación</h2>
-      <p class="hint">Alumnos por programa educativo, corte final.</p>
-      <div class="chart-box"><canvas id="chartAprobacion"></canvas></div>
+      <p class="hint" id="hintAprob">Alumnos por programa educativo, corte final.</p>
+      <div class="chart-box" id="boxAprob"><canvas id="chartAprobacion"></canvas></div>
     </div>
   </div>
 
@@ -181,8 +184,8 @@
       <div class="chart-box"><canvas id="chartTendencia"></canvas></div>
     </div>
     <div class="card">
-      <h2>Materias con más reprobación</h2>
-      <p class="hint">Top 8 materias por % de reprobados, dentro del filtro actual.</p>
+      <h2 id="titleMaterias">Materias con más reprobación</h2>
+      <p class="hint" id="hintMaterias">Top 8 materias por % de reprobados, dentro del filtro actual.</p>
       <div class="chart-box tall"><canvas id="chartMaterias"></canvas></div>
     </div>
   </div>
@@ -227,6 +230,31 @@ let RAW = null;
 let ROWS = [];
 let sortState = { key: 'porcentajeReprobados', dir: 'desc' };
 let charts = {};
+const CORTE_KEYS = ['corte1','corte2','corte3','final'];
+let INFO = {};
+
+// Un corte cuenta como evaluado si al menos la mitad de las materias del periodo
+// tiene calificacion > 0. corte = 1..3 (periodo en curso) o 4 (periodo cerrado, "Final").
+function computeInfo(){
+  const porPeriodo = {};
+  ROWS.forEach(r => { (porPeriodo[r.periodo] = porPeriodo[r.periodo] || []).push(r); });
+  INFO = {};
+  Object.entries(porPeriodo).forEach(([p, rows]) => {
+    let corte = 0;
+    for (const k of CORTE_KEYS.slice(0,3)){
+      const con = rows.filter(r => typeof r[k] === 'number' && r[k] > 0).length;
+      if (con / rows.length < 0.5) break;
+      corte++;
+    }
+    INFO[p] = { corte: corte >= 3 ? 4 : Math.max(corte, 1) };
+  });
+}
+
+function corteActual(){
+  const p = document.getElementById('fPeriodo').value;
+  return (INFO[p] || { corte: 4 }).corte;
+}
+function corteLabel(n){ return n === 4 ? 'final' : `Corte ${n}`; }
 
 function colorFor(name, list){
   const idx = list.indexOf(name);
@@ -274,6 +302,7 @@ function badgeForPct(pct){
 
 function currentFilters(){
   return {
+    periodo: document.getElementById('fPeriodo').value,
     carrera: document.getElementById('fCarrera').value,
     cuatrimestre: document.getElementById('fCuatrimestre').value,
     grupo: document.getElementById('fGrupo').value,
@@ -284,6 +313,7 @@ function currentFilters(){
 function filteredRows(){
   const f = currentFilters();
   return ROWS.filter(r => {
+    if (r.periodo !== f.periodo) return false;
     if (f.carrera && r.carrera !== f.carrera) return false;
     if (f.cuatrimestre && r.cuatrimestre !== f.cuatrimestre) return false;
     if (f.grupo && (r.carrera+'|'+r.grupo) !== f.grupo) return false;
@@ -294,7 +324,9 @@ function filteredRows(){
 
 function uniqueGroupsFor(carrera, cuatrimestre){
   const seen = new Set();
+  const periodo = document.getElementById('fPeriodo').value;
   RAW.carreras.forEach(c => {
+    if (c.periodo !== periodo) return;
     if (carrera && c.carrera !== carrera) return;
     c.grupos.forEach(g => {
       if (cuatrimestre && cuatrimestreOf(g.grupo) !== cuatrimestre) return;
@@ -305,19 +337,29 @@ function uniqueGroupsFor(carrera, cuatrimestre){
 }
 
 function populateFilters(){
-  const fCarrera = document.getElementById('fCarrera');
-  const carreras = RAW.carreras.map(c => c.carrera);
-  fCarrera.innerHTML = '<option value="">Todos los programas</option>' +
-    carreras.map(c => `<option value="${c}">${c}</option>`).join('');
+  const periodos = [...new Set(RAW.carreras.map(c => c.periodo))];
+  const fPeriodo = document.getElementById('fPeriodo');
+  fPeriodo.innerHTML = periodos.map(p => `<option value="${p}">${p}</option>`).join('');
+  fPeriodo.value = periodos[periodos.length - 1];
+  refreshPeriodFilters();
+}
+
+function refreshPeriodFilters(){
+  const periodo = document.getElementById('fPeriodo').value;
+  const carrerasP = RAW.carreras.filter(c => c.periodo === periodo);
+
+  document.getElementById('fCarrera').innerHTML = '<option value="">Todos los programas</option>' +
+    carrerasP.map(c => `<option value="${c.carrera}">${c.carrera}</option>`).join('');
 
   const cuatrimestres = [...new Set(
-    RAW.carreras.flatMap(c => c.grupos.map(g => cuatrimestreOf(g.grupo))).filter(Boolean)
+    carrerasP.flatMap(c => c.grupos.map(g => cuatrimestreOf(g.grupo))).filter(Boolean)
   )].sort((a,b) => Number(a)-Number(b));
   document.getElementById('fCuatrimestre').innerHTML = '<option value="">Todos</option>' +
     cuatrimestres.map(n => `<option value="${n}">${n}° cuatrimestre</option>`).join('');
 
-  const periodos = [...new Set(RAW.carreras.map(c => c.periodo))];
-  document.getElementById('periodPill').textContent = periodos.length === 1 ? periodos[0] : `${periodos.length} periodos`;
+  const n = corteActual();
+  document.getElementById('periodPill').textContent = n === 4 ? periodo : `${periodo} · en curso (hasta ${corteLabel(n)})`;
+  sortState = n === 4 ? { key: 'porcentajeReprobados', dir: 'desc' } : { key: CORTE_KEYS[n-1], dir: 'asc' };
 
   refreshGrupoFilter();
   refreshTendenciaSelect();
@@ -337,7 +379,9 @@ function refreshTendenciaSelect(){
   const fCuatrimestre = document.getElementById('fCuatrimestre').value;
   const sel = document.getElementById('fGrupoTendencia');
   const groups = [];
+  const periodo = document.getElementById('fPeriodo').value;
   RAW.carreras.forEach(c => {
+    if (c.periodo !== periodo) return;
     if (fCarrera && c.carrera !== fCarrera) return;
     c.grupos.forEach(g => {
       if (fCuatrimestre && cuatrimestreOf(g.grupo) !== fCuatrimestre) return;
@@ -352,9 +396,11 @@ function renderKPIs(){
   const totalAlumnos = new Map();
   let sumFinal = 0, countFinal = 0, totalReprobados = 0, totalBajas = 0;
   const gruposVistos = new Set();
+  const n = corteActual();
+  const keyProm = CORTE_KEYS[n-1];
 
   rows.forEach(r => {
-    if (typeof r.final === 'number'){ sumFinal += r.final; countFinal++; }
+    if (typeof r[keyProm] === 'number'){ sumFinal += r[keyProm]; countFinal++; }
     totalReprobados += r.reprobados;
     const gk = r.carrera+'|'+r.grupo;
     if (!gruposVistos.has(gk)){
@@ -368,10 +414,12 @@ function renderKPIs(){
   const pctReprob = sumAlumnos ? (totalReprobados/sumAlumnos*100) : 0;
 
   const kpis = [
-    { label:'Promedio final', value: fmt(promedio), sub: `${countFinal} materias evaluadas`, cls:'accent' },
+    { label: n === 4 ? 'Promedio final' : `Promedio ${corteLabel(n)}`, value: fmt(promedio), sub: `${countFinal} materias evaluadas`, cls:'accent' },
     { label:'Grupos', value: gruposVistos.size, sub: `${new Set(rows.map(r=>r.carrera)).size} programa(s)` , cls:''},
     { label:'Alumnos activos', value: sumAlumnos, sub:`${totalBajas} baja(s) en el corte`, cls:'' },
-    { label:'% Reprobación', value: fmt(pctReprob,1)+'%', sub: `${totalReprobados} reprobación(es) de materia`, cls: pctReprob>5?'danger':'good' },
+    n === 4
+      ? { label:'% Reprobación', value: fmt(pctReprob,1)+'%', sub: `${totalReprobados} reprobación(es) de materia`, cls: pctReprob>5?'danger':'good' }
+      : { label:'% Reprobación', value: '—', sub: 'Se calcula al cierre del periodo', cls:'' },
   ];
   document.getElementById('kpis').innerHTML = kpis.map(k => `
     <div class="kpi ${k.cls}">
@@ -386,11 +434,15 @@ function destroyChart(key){ if (charts[key]) { charts[key].destroy(); delete cha
 
 function renderChartGrupos(){
   const rows = filteredRows();
+  const n = corteActual();
   const byGroup = new Map();
   rows.forEach(r => {
     const k = r.carrera+'|'+r.grupo;
-    if (!byGroup.has(k)) byGroup.set(k, {carrera:r.carrera, grupo:r.grupo, final:r.grupal.final});
+    if (!byGroup.has(k)) byGroup.set(k, {carrera:r.carrera, grupo:r.grupo, final:r.grupal[CORTE_KEYS[n-1]]});
   });
+  const cl = n === 4 ? 'final' : corteLabel(n);
+  document.getElementById('titleGrupos').textContent = `Promedio ${cl} por grupo`;
+  document.getElementById('hintGrupos').textContent = `Calificación grupal ${cl}, comparada entre grupos del filtro actual.`;
   const items = [...byGroup.values()].sort((a,b)=> (b.final||0)-(a.final||0));
   const carreras = [...new Set(items.map(i=>i.carrera))];
 
@@ -401,7 +453,7 @@ function renderChartGrupos(){
     data:{
       labels: items.map(i=>i.grupo),
       datasets:[{
-        label:'Promedio final grupal',
+        label:`Promedio ${cl} grupal`,
         data: items.map(i=>i.final),
         backgroundColor: items.map(i=>colorFor(i.carrera, carreras)),
         borderRadius:6,
@@ -419,6 +471,17 @@ function renderChartGrupos(){
 }
 
 function renderChartAprobacion(){
+  const n = corteActual();
+  const box = document.getElementById('boxAprob');
+  const hint = document.getElementById('hintAprob');
+  if (n < 4){
+    destroyChart('aprobacion');
+    box.style.display = 'none';
+    hint.textContent = `Periodo en curso: la reprobación se mostrará al cierre del periodo (hoy solo hay datos hasta ${corteLabel(n)}).`;
+    return;
+  }
+  box.style.display = '';
+  hint.textContent = 'Alumnos por programa educativo, corte final.';
   const rows = filteredRows();
   const byCarrera = new Map();
   rows.forEach(r => {
@@ -449,18 +512,22 @@ function renderChartAprobacion(){
 function renderChartTendencia(){
   const key = document.getElementById('fGrupoTendencia').value;
   const groups = [];
-  RAW.carreras.forEach(c => c.grupos.forEach(g => groups.push({carrera:c.carrera, grupo:g})));
+  const periodo = document.getElementById('fPeriodo').value;
+  RAW.carreras.filter(c => c.periodo === periodo)
+    .forEach(c => c.grupos.forEach(g => groups.push({carrera:c.carrera, grupo:g})));
   const g = groups.find(x => (x.carrera+'|'+x.grupo.grupo) === key) || groups[0];
   destroyChart('tendencia');
   if (!g) return;
   const grupal = g.grupo.grupal;
+  const n = corteActual();
+  const serie = CORTE_KEYS.map((k, i) => i < n ? grupal[k] : null);
   charts.tendencia = new Chart(document.getElementById('chartTendencia'), {
     type:'line',
     data:{
       labels:['Corte 1','Corte 2','Corte 3','Final'],
       datasets:[{
         label:`${g.grupo.grupo} — promedio grupal`,
-        data:[grupal.corte1, grupal.corte2, grupal.corte3, grupal.final],
+        data:serie,
         borderColor:'#5b3373', backgroundColor:'rgba(91,51,115,.12)',
         fill:true, tension:.3, pointRadius:4,
       }]
@@ -475,15 +542,24 @@ function renderChartTendencia(){
 
 function renderChartMaterias(){
   const rows = filteredRows();
-  const top = [...rows].sort((a,b)=>b.porcentajeReprobados-a.porcentajeReprobados).slice(0,8);
+  const n = corteActual();
+  const keyProm = CORTE_KEYS[n-1];
+  const porPromedio = n < 4;
+  const top = [...rows]
+    .sort((a,b) => porPromedio ? (a[keyProm] ?? Infinity) - (b[keyProm] ?? Infinity) : b.porcentajeReprobados - a.porcentajeReprobados)
+    .slice(0,8);
+  document.getElementById('titleMaterias').textContent = porPromedio ? 'Materias con menor promedio' : 'Materias con más reprobación';
+  document.getElementById('hintMaterias').textContent = porPromedio
+    ? `Top 8 materias por menor promedio de ${corteLabel(n)}, dentro del filtro actual.`
+    : 'Top 8 materias por % de reprobados, dentro del filtro actual.';
   destroyChart('materias');
   charts.materias = new Chart(document.getElementById('chartMaterias'), {
     type:'bar',
     data:{
       labels: top.map(r => `${r.materia} (${r.grupo})`),
       datasets:[{
-        label:'% Reprobados',
-        data: top.map(r=>r.porcentajeReprobados),
+        label: porPromedio ? `Promedio ${corteLabel(n)}` : '% Reprobados',
+        data: top.map(r => porPromedio ? r[keyProm] : r.porcentajeReprobados),
         backgroundColor:'#f4b737',
         borderRadius:6,
       }]
@@ -491,7 +567,7 @@ function renderChartMaterias(){
     options:{
       responsive:true, maintainAspectRatio:false, indexAxis:'y',
       plugins:{legend:{display:false}},
-      scales:{ x:{ min:0 } }
+      scales:{ x: porPromedio ? { min:6, max:10 } : { min:0 } }
     }
   });
 }
@@ -505,6 +581,8 @@ function renderTable(){
     return ((av ?? -Infinity) - (bv ?? -Infinity)) * dir;
   });
 
+  const n = corteActual();
+  const cell = (r, i) => fmt(i < n ? r[CORTE_KEYS[i]] : null);
   document.getElementById('tableCount').textContent = `${rows.length} registro(s)`;
   document.getElementById('detailBody').innerHTML = rows.map(r => `
     <tr>
@@ -512,12 +590,12 @@ function renderTable(){
       <td>${r.grupo}</td>
       <td>${r.materia}</td>
       <td class="muted">${r.docente}</td>
-      <td>${fmt(r.corte1)}</td>
-      <td>${fmt(r.corte2)}</td>
-      <td>${fmt(r.corte3)}</td>
-      <td><strong>${fmt(r.final)}</strong></td>
-      <td>${r.totalAlumnos} <span class="muted">(${r.reprobados} rep.)</span></td>
-      <td>${badgeForPct(r.porcentajeReprobados)}</td>
+      <td>${cell(r,0)}</td>
+      <td>${cell(r,1)}</td>
+      <td>${cell(r,2)}</td>
+      <td><strong>${cell(r,3)}</strong></td>
+      <td>${r.totalAlumnos}${n === 4 ? ` <span class="muted">(${r.reprobados} rep.)</span>` : ''}</td>
+      <td>${n === 4 ? badgeForPct(r.porcentajeReprobados) : '—'}</td>
     </tr>
   `).join('') || `<tr><td colspan="10" class="empty">Sin resultados para este filtro.</td></tr>`;
 
@@ -537,6 +615,7 @@ function renderAll(){
 }
 
 function wireEvents(){
+  document.getElementById('fPeriodo').addEventListener('change', () => { refreshPeriodFilters(); renderAll(); });
   document.getElementById('fCarrera').addEventListener('change', () => { refreshGrupoFilter(); refreshTendenciaSelect(); renderAll(); });
   document.getElementById('fCuatrimestre').addEventListener('change', () => { refreshGrupoFilter(); refreshTendenciaSelect(); renderAll(); });
   document.getElementById('fGrupo').addEventListener('change', renderAll);
@@ -557,6 +636,7 @@ fetch('data.json')
   .then(data => {
     RAW = data;
     ROWS = flatten(data);
+    computeInfo();
     populateFilters();
     wireEvents();
     renderAll();
